@@ -3,7 +3,6 @@ import axios from "axios";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -29,13 +28,12 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-function UserRegister() {
+function UserLogin() {
   const classes = useStyles();
   const { push } = useHistory();
 
   const initialFormValues = {
     user_username: "",
-    user_email: "",
     user_password: "",
   };
   const [value, setValue] = useState(initialFormValues);
@@ -50,9 +48,9 @@ function UserRegister() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:59283/user_information/auth/register", value)
+      .post("http://localhost:59283/user_information/auth/login", value)
       .then((res) => {
-        push("/login");
+        console.log(res);
       })
       .catch((err) => {
         console.log("Axios error, USER_REGISTER", err);
@@ -64,7 +62,7 @@ function UserRegister() {
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Sign up
+          Sign in
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
@@ -76,17 +74,6 @@ function UserRegister() {
                 id="user_username"
                 label="Username"
                 name="user_username"
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="user_email"
-                label="Email Address"
-                name="user_email"
                 onChange={handleChange}
               />
             </Grid>
@@ -110,19 +97,12 @@ function UserRegister() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Sign In
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>
   );
 }
 
-export default UserRegister;
+export default UserLogin;

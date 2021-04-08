@@ -50,7 +50,7 @@ function UserRegister() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:59283/user_information/auth/register", value)
+      .post("http://localhost:59283/user/information/auth/register", value)
       .then((res) => {
         push("/login");
       })

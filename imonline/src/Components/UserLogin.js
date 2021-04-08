@@ -8,7 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router-dom";
-
+import { connect } from "react-redux";
+import {setUsername,setUserID} from '../Actions/userActions';
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-function UserLogin() {
+function UserLogin(props) {
   const classes = useStyles();
   const { push } = useHistory();
 
@@ -48,12 +49,14 @@ function UserLogin() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:59283/user_information/auth/login", value)
+      .post("http://localhost:59283/user/information/auth/login", value)
       .then((res) => {
-        console.log(res);
+        props.setUsername(res.data.user_username)
+        props.setUserID(res.data.user_id)
+        push("/createprofile");
       })
       .catch((err) => {
-        console.log("Axios error, USER_REGISTER", err);
+        console.log("Axios error, USER_LOGIN", err);
       });
   };
 
@@ -105,4 +108,13 @@ function UserLogin() {
   );
 }
 
-export default UserLogin;
+const mapStateToProps = (state) => {
+  return {
+    user_username: state.user.user_username,
+    user_id: state.user.user_id,
+  };
+};
+
+export default connect(mapStateToProps, {setUsername,setUserID})(
+  UserLogin
+);

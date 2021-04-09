@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,6 +38,7 @@ const CreatePost = (props) => {
     user_post_img: "",
     user_post_city: "",
     user_post_State: "",
+    user_id: props.user_id
   };
   const [value, setValue] = useState(initialFormValues);
 
@@ -49,7 +51,27 @@ const CreatePost = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    push("/home");
+    axios
+    .post('http://localhost:59283/user/post', value)
+    .then(res=>{
+      console.log(res)
+      const newUID = parseInt(res.data)
+      const data = {
+        user_id:props.user_id,
+        user_post_id:newUID
+      }
+      axios
+      .post('http://localhost:59283/user/view/post', data)
+      .then(res=>{
+        push("/home");
+      })
+      .catch(err=>{
+        console.log("Axios to view db error", err)
+      })
+    })
+    .catch(err=>{
+      console.log("Axios create post error", err)
+    })
   };
   return (
     <div>
@@ -72,7 +94,7 @@ const CreatePost = (props) => {
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   fullWidth
@@ -81,7 +103,7 @@ const CreatePost = (props) => {
                   name="user_post_img"
                   onChange={handleChange}
                 />
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"

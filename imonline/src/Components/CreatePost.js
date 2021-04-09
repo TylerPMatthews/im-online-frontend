@@ -94,7 +94,7 @@ const CreatePost = (props) => {
                   onChange={handleChange}
                 />
               </Grid>
-              {/* <Grid item xs={12}>
+              <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   fullWidth
@@ -103,7 +103,7 @@ const CreatePost = (props) => {
                   name="user_post_img"
                   onChange={handleChange}
                 />
-              </Grid> */}
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"

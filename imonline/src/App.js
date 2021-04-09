@@ -9,6 +9,7 @@ import CreatePost from './Components/CreatePost';
 import FindFriends from './Components/FindFriends';
 import UserProfile from './Components/userProfile';
 import GetPosts from './Components/GetPosts';
+import Comments from './Components/comments';
 
 function App() {
   return (
@@ -16,6 +17,9 @@ function App() {
       <header className="App-header"></header>
       <body>
         <Switch>
+          <Route path='/comments:id'>
+            <Comments/>
+          </Route>
           <Route path='/userprofile:id'>
             <UserProfile/>
           </Route>

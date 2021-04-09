@@ -10,6 +10,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 
 const StyledDiv = styled.div`
@@ -37,7 +38,7 @@ const useStyles = makeStyles({
 
 const GetPosts = () => {
   const classes = useStyles();
-
+const {push} = useHistory()
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     axios
@@ -50,6 +51,7 @@ const GetPosts = () => {
         console.log("Axios get all posts error", err);
       });
   }, []);
+ console.log(posts)
   return (
     <StyledDiv>
       <div className="postwrapper">
@@ -86,7 +88,9 @@ const GetPosts = () => {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Comments</Button>
+                  <Button size="small" onClick={()=>{
+                    push(`/comments:${item.user_post_id}`)
+                  }}>Comments</Button>
                   <Button size="small">Like {""}<ThumbUpIcon/> </Button>
                       <Button size="small">Dislike {""} <ThumbDownIcon/></Button>
                 </CardActions>

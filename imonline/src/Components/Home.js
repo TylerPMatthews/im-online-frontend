@@ -20,9 +20,10 @@ h3{
 .postwrap a{
   color:black;
   background-color:white;
-  padding:1.5%;
+  padding:0.5rem;
   text-decoration:none;
   border-radius:5px;
+  font-size:1rem;
 }
 .greeting span{
   color:white;
@@ -31,12 +32,8 @@ h3{
 `;
 
 const Home = (props) => {
-
   return (
     <StyledDiv>
-      <div className="findfriendswrap">
-        <Link to="/findfriends">Find Friends</Link>
-      </div>
       <div className="greeting">
         <h2>Welcome , <span>{props.user_username}</span></h2>
       </div>

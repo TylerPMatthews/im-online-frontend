@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import UserRegister from "./Components/UserRegister";
 import UserLogin from "./Components/UserLogin";
@@ -10,11 +11,13 @@ import FindFriends from './Components/FindFriends';
 import UserProfile from './Components/userProfile';
 import GetPosts from './Components/GetPosts';
 import Comments from './Components/comments';
+import Nav from './Components/Nav';
 
-function App() {
+function App(props) {
+
   return (
     <div className="App">
-      <header className="App-header"></header>
+      <Nav/>
       <body>
         <Switch>
           <Route path='/comments:id'>
@@ -48,4 +51,11 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    user_username: state.user.user_username,
+    user_id: state.user.user_id,
+  };
+};
+
+export default connect(mapStateToProps)(App);

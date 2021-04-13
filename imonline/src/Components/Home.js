@@ -11,10 +11,22 @@ a{
   
 }
 h2{
-  color:white;
+  color:red;
 }
 h3{
+  color:red;
+}
+
+.postwrap a{
+  color:black;
+  background-color:white;
+  padding:1.5%;
+  text-decoration:none;
+  border-radius:5px;
+}
+.greeting span{
   color:white;
+  padding:2%;
 }
 `;
 
@@ -26,7 +38,7 @@ const Home = (props) => {
         <Link to="/findfriends">Find Friends</Link>
       </div>
       <div className="greeting">
-        <h2>Welcome , {props.user_username}</h2>
+        <h2>Welcome , <span>{props.user_username}</span></h2>
       </div>
       <div className="postwrap">
         <h3>Would you like to create a new post?</h3>

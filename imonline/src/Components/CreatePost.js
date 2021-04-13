@@ -38,7 +38,7 @@ const CreatePost = (props) => {
     user_post_img: "",
     user_post_city: "",
     user_post_State: "",
-    user_id: props.user_id
+    user_id: props.user_id,
   };
   const [value, setValue] = useState(initialFormValues);
 
@@ -52,26 +52,41 @@ const CreatePost = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-    .post('http://localhost:59283/user/post', value)
-    .then(res=>{
-      console.log(res)
-      const newUID = parseInt(res.data)
-      const data = {
-        user_id:props.user_id,
-        user_post_id:newUID
-      }
-      axios
-      .post('http://localhost:59283/user/view/post', data)
-      .then(res=>{
-        push("/home");
+      .post("http://localhost:59283/user/post", value)
+      .then((res) => {
+        console.log(res);
+        const newUID = parseInt(res.data);
+
+        const PostData = {
+          user_post_id: newUID,
+        };
+        axios
+          .post("http://localhost:59283/user/post/liked", PostData)
+          .then((res) => {
+            console.log(res);
+            const newLikedID = parseInt(res.data);
+            const data = {
+              user_id: props.user_id,
+              user_post_id: newUID,
+              user_post_liked_id: newLikedID,
+            };
+            axios
+              .post("http://localhost:59283/user/view/post", data)
+              .then((res) => {
+                console.log(res);
+                push("/home");
+              })
+              .catch((err) => {
+                console.log("Axios to view db error", err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
-      .catch(err=>{
-        console.log("Axios to view db error", err)
-      })
-    })
-    .catch(err=>{
-      console.log("Axios create post error", err)
-    })
+      .catch((err) => {
+        console.log("Axios create post error", err);
+      });
   };
   return (
     <div>

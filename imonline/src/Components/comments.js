@@ -9,6 +9,11 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { useParams, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
+import styled from "styled-components";
+
+const StyledDiv = styled.div`
+
+text-align:center;`
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,16 +47,18 @@ const Comments = (props) => {
   };
 
   const [value, setValue] = useState(initialFormValues);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState([])
   useEffect(() => {
     axios
       .get(`http://localhost:59283/user/comment/view/${newID}`)
       .then((res) => {
-        console.log(res);
+        setComments(res.data);
       })
       .catch((err) => {
         console.log("Axios comments error", err);
       });
-  }, []);
+  }, [newComment, newID]);
 
   const handleChange = (e) => {
     setValue({
@@ -65,17 +72,18 @@ const Comments = (props) => {
     axios
       .post("http://localhost:59283/user/comment", value)
       .then((res) => {
-        console.log(res);
+        setValue(initialFormValues)
         const newUID = parseInt(res.data);
         const data = {
           user_id: props.user_id,
           user_post_id: newID,
           user_comment_id: newUID,
         };
+        
         axios
           .post("http://localhost:59283/user/comment/view", data)
           .then((res) => {
-            push("/home");
+            setNewComment(res)
           })
           .catch((err) => {
             console.log("Axios to view db error", err);
@@ -85,8 +93,10 @@ const Comments = (props) => {
         console.log("Axios create post error", err);
       });
   };
+
+  console.log(comments)
   return (
-    <div>
+    <StyledDiv>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -103,6 +113,7 @@ const Comments = (props) => {
                   label="Comment ..."
                   name="user_comment_text"
                   onChange={handleChange}
+                  value={value.user_comment_text}
                 />
               </Grid>
             </Grid>
@@ -118,7 +129,19 @@ const Comments = (props) => {
           </form>
         </div>
       </Container>
-    </div>
+
+      <div>
+        <h2>User Comments</h2>
+        {comments.map((item, idx) => {
+          return (
+            <div key={idx}>
+              <h4> username: {item.user_username}</h4>
+              <p>{item.user_comment_text}</p>
+            </div>
+          );
+        })}
+      </div>
+    </StyledDiv>
   );
 };
 const mapStateToProps = (state) => {

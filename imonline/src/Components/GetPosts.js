@@ -68,8 +68,9 @@ const GetPosts = (props) => {
     axios
       .get("http://localhost:59283/user/view/post")
       .then((res) => {
-        console.log(res);
-        setPosts(res.data);
+        const data = res.data
+        const reversedData = data.reverse()
+        setPosts(reversedData);
       })
       .catch((err) => {
         console.log("Axios get all posts error", err);
@@ -82,14 +83,16 @@ const GetPosts = (props) => {
         <h3>Recent Post's</h3>
         {posts.map((item, idx) => {
           const likePost = () => {
-            const newLikedData = {
-              user_post_id: item.user_post_id,
-              user_post_liked_thumbUp: item.user_post_liked_thumbUp + 1,
-            };
+            item.user_post_liked_username !== null ? (
+              item.user_post_liked_username.push(props.user_username)
+            ) : (
+              <div></div>
+            );
+
             axios
               .put(
                 `http://localhost:59283/user/post/liked/${item.user_post_id}`,
-                newLikedData
+                item.user_post_liked_username
               )
               .then((res) => {
                 setLiked(res);
@@ -120,14 +123,15 @@ const GetPosts = (props) => {
 
           const deletePost = () => {
             axios
-            .delete(`http://localhost:59283/user/post/${item.user_post_id}`)
-            .then(res=>{
-              setLiked(res)
-            })
-            .catch(err=>{
-              console.log(err)
-            })
-          }
+              .delete(`http://localhost:59283/user/post/${item.user_post_id}`)
+              .then((res) => {
+                setLiked(res);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          };
+
           return (
             <div key={idx}>
               <Card className={classes.root} variant="outlined">
@@ -173,14 +177,21 @@ const GetPosts = (props) => {
                     Comments
                   </Button>
                   <Button size="small" onClick={likePost}>
-                    Like {item.user_post_liked_thumbUp}
+                    Like{" "}
+                    {item.user_post_liked_username !== null ? (
+                      item.user_post_liked_username.length
+                    ) : (
+                      <div></div>
+                    )}
                     <ThumbUpIcon />{" "}
                   </Button>
                   <Button size="small" onClick={dislikePost}>
                     Dislike {item.user_post_liked_thumbDown} <ThumbDownIcon />
                   </Button>
                   {props.user_username === item.user_username ? (
-                    <Button size="small" onClick={deletePost}>Delete</Button>
+                    <Button size="small" onClick={deletePost}>
+                      Delete
+                    </Button>
                   ) : (
                     <div></div>
                   )}

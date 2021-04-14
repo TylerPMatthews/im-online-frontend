@@ -12,8 +12,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 
 const StyledDiv = styled.div`
-
-text-align:center;`
+  text-align: center;
+`;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,7 +48,7 @@ const Comments = (props) => {
 
   const [value, setValue] = useState(initialFormValues);
   const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState([])
+  const [newComment, setNewComment] = useState([]);
   useEffect(() => {
     axios
       .get(`http://localhost:59283/user/comment/view/${newID}`)
@@ -72,18 +72,18 @@ const Comments = (props) => {
     axios
       .post("http://localhost:59283/user/comment", value)
       .then((res) => {
-        setValue(initialFormValues)
+        setValue(initialFormValues);
         const newUID = parseInt(res.data);
         const data = {
           user_id: props.user_id,
           user_post_id: newID,
           user_comment_id: newUID,
         };
-        
+
         axios
           .post("http://localhost:59283/user/comment/view", data)
           .then((res) => {
-            setNewComment(res)
+            setNewComment(res);
           })
           .catch((err) => {
             console.log("Axios to view db error", err);
@@ -94,7 +94,7 @@ const Comments = (props) => {
       });
   };
 
-  console.log(comments)
+  console.log(comments);
   return (
     <StyledDiv>
       <Container component="main" maxWidth="xs">

@@ -7,7 +7,7 @@ import styled from "styled-components";
 const StyledDiv = styled.div`
 text-align:center;
 a{
-  color:white;
+  color:black;
   
 }
 h2{
@@ -18,15 +18,15 @@ h3{
 }
 
 .postwrap a{
-  color:black;
-  background-color:white;
+  color:white;
+  background-color:black;
   padding:0.5rem;
   text-decoration:none;
   border-radius:5px;
   font-size:1rem;
 }
 .greeting span{
-  color:white;
+  color:black;
   padding:2%;
 }
 `;

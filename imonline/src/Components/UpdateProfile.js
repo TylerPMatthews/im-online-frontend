@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import { connect } from "react-redux";
+import axios from "axios";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -7,8 +9,10 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
+
+const StyledDiv = styled.div`
+  text-align: center;
+`;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -19,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -30,17 +33,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreatePost = (props) => {
-  const { push } = useHistory();
+const UpdateProfile = (props) => {
   const classes = useStyles();
   const initialFormValues = {
-    user_post_text: "",
-    user_post_img: "",
-    user_post_city: "",
-    user_post_State: "",
-    user_id: props.user_id,
+    user_profile_firstName: "",
+    user_profile_lastName: "",
+    user_profile_location: "",
+    user_profile_bio: "",
   };
   const [value, setValue] = useState(initialFormValues);
+  const [dummy, setDummy] = useState([]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:59283/user/profile/${props.user_id}`)
+      .then((res) => {
+        setValue(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [dummy, props.user_id]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .put(`http://localhost:59283/user/profile/${props.user_id}`, value)
+      .then((res) => {
+        window.alert("Your profile has been updated!");
+        setDummy(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const handleChange = (e) => {
     setValue({
@@ -48,110 +73,60 @@ const CreatePost = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .post("http://localhost:59283/user/post", value)
-      .then((res) => {
-        console.log(res);
-        const newUID = parseInt(res.data);
-
-        const PostData = {
-          user_post_id: newUID,
-        };
-        axios
-          .post("http://localhost:59283/user/post/liked", PostData)
-          .then((res) => {
-            const newLikedID = parseInt(res.data);
-
-            axios
-            .post("http://localhost:59283/user/post/disliked", PostData)
-            .then(res=>{
-
-              const newDislikedID = parseInt(res.data);
-              const data = {
-              user_id: props.user_id,
-              user_post_id: newUID,
-              user_post_liked_id: newLikedID,
-              user_post_disliked_id: newDislikedID
-            };
-
-
-             axios
-              .post("http://localhost:59283/user/view/post", data)
-              .then((res) => {
-                console.log(res);
-                push("/home");
-              })
-              .catch((err) => {
-                console.log("Axios to view db error", err);
-              });
-
-
-            })
-            .catch(err=>{
-              console.log(err)
-            })
-
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log("Axios create post error", err);
-      });
-  };
   return (
-    <div>
+    <StyledDiv>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Create a post
+            Update {props.user_username}'s Profile
           </Typography>
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
+                <h4>First Name</h4>
                 <TextField
                   variant="outlined"
-                  required
                   fullWidth
-                  id="user_post_text"
-                  label="What's on your mind?..."
-                  name="user_post_text"
+                  id="user_profile_firstName"
+                  name="user_profile_firstName"
                   onChange={handleChange}
+                  value={value.user_profile_firstName}
                 />
               </Grid>
               <Grid item xs={12}>
+                <h4>last Name</h4>
                 <TextField
                   variant="outlined"
                   fullWidth
-                  id="user_post_img"
-                  label="Post Image (use image address)"
-                  name="user_post_img"
+                  id="user_profile_lastName"
+                  name="user_profile_lastName"
                   onChange={handleChange}
+                  value={value.user_profile_lastName}
                 />
               </Grid>
+
               <Grid item xs={12}>
+                <h4>Location</h4>
                 <TextField
                   variant="outlined"
                   fullWidth
-                  id="user_post_city"
-                  label="City"
-                  name="user_post_city"
+                  id="user_profile_location"
+                  name="user_profile_location"
                   onChange={handleChange}
+                  value={value.user_profile_location}
                 />
               </Grid>
+
               <Grid item xs={12}>
+                <h4>Bio</h4>
                 <TextField
                   variant="outlined"
                   fullWidth
-                  id="user_post_State"
-                  label="State"
-                  name="user_post_State"
+                  id="user_profile_bio"
+                  name="user_profile_bio"
                   onChange={handleChange}
+                  value={value.user_profile_bio}
                 />
               </Grid>
             </Grid>
@@ -162,12 +137,12 @@ const CreatePost = (props) => {
               color="primary"
               className={classes.submit}
             >
-              Create
+              Update
             </Button>
           </form>
         </div>
       </Container>
-    </div>
+    </StyledDiv>
   );
 };
 const mapStateToProps = (state) => {
@@ -177,4 +152,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(CreatePost);
+export default connect(mapStateToProps)(UpdateProfile);

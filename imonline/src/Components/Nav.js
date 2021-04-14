@@ -4,14 +4,15 @@ import styled from "styled-components";
 
 const StyledDiv = styled.nav`
 
-background-color:white;
-padding:2.5%;
+background-color:black;
+padding:3%;
 display:flex;
 justify-content:space-evenly;
 
 a{
     text-decoration:none;
-    color:black;
+    color:white;
+    font-size:1.1rem;
 }
 
 `
@@ -22,7 +23,7 @@ const Nav = () => {
            <StyledDiv>
                <Link to='/home'>Home</Link>
                <Link to='/createpost'>Create Post</Link>
-               <Link>My Profile</Link>
+               <Link to='myprofile'>My Profile</Link>
                <Link>Logout</Link>
            </StyledDiv>
        </header>

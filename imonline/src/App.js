@@ -12,7 +12,9 @@ import UserProfile from './Components/userProfile';
 import GetPosts from './Components/GetPosts';
 import Comments from './Components/comments';
 import Nav from './Components/Nav';
-
+import MyProfile from './Components/MyProfile';
+import UpdateInformation from './Components/UpdateInformation';
+import UpdateProfile from './Components/UpdateProfile';
 function App(props) {
 
   return (
@@ -20,6 +22,15 @@ function App(props) {
       <Nav/>
       <body>
         <Switch>
+          <Route path='/updateprofile'>
+            <UpdateProfile/>
+          </Route>
+          <Route path='/updateinformation'>
+            <UpdateInformation/>
+          </Route>
+          <Route path='/myprofile'>
+            <MyProfile/>
+          </Route>
           <Route path='/comments:id'>
             <Comments/>
           </Route>

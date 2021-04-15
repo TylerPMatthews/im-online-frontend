@@ -10,6 +10,7 @@ import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
+//Form styles
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -32,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 function UserCreateProfile(props) {
   const classes = useStyles();
   const { push } = useHistory();
+
+  //form values
   const initialFormValues = {
     user_profile_firstName: "",
     user_profile_lastName: "",
@@ -39,21 +42,25 @@ function UserCreateProfile(props) {
     user_profile_location: "",
     user_id: props.user_id,
   };
+
+  //State
   const [value, setValue] = useState(initialFormValues);
 
+  //Get profile
   useEffect(() => {
     axios
       .get(`http://localhost:59283/user/profile/${props.user_id}`)
       .then((res) => {
         if (res.data.length > 0) {
-          push('/home');
+          push("/home");
         }
       })
       .catch((err) => {
         console.log("GET create profile error", err);
       });
-  }, []);
+  }, [props.user_id, push]);
 
+  //Form chnage
   const handleChange = (e) => {
     setValue({
       ...value,
@@ -61,12 +68,13 @@ function UserCreateProfile(props) {
     });
   };
 
+  //form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:59283/user/profile", value)
+      .post("https://im-online.herokuapp.com/user/profile", value)
       .then((res) => {
-        push("/home")
+        push("/home");
       })
       .catch((err) => {
         console.log("Axios error, USER_PROFILE", err);

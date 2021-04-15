@@ -9,8 +9,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import {setUsername,setUserID} from '../Actions/userActions';
-import {setLoggedIn} from '../Actions/logoutActions';
+import { setUsername, setUserID } from "../Actions/userActions";
+import { setLoggedIn } from "../Actions/logoutActions";
+
+//Form styles
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -34,12 +36,16 @@ function UserLogin(props) {
   const classes = useStyles();
   const { push } = useHistory();
 
+  //Form values
   const initialFormValues = {
     user_username: "",
     user_password: "",
   };
+
+  //State
   const [value, setValue] = useState(initialFormValues);
 
+  //Form change
   const handleChange = (e) => {
     setValue({
       ...value,
@@ -47,15 +53,19 @@ function UserLogin(props) {
     });
   };
 
+  //Form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:59283/user/information/auth/login", value)
+      .post(
+        "https://im-online.herokuapp.com/user/information/auth/login",
+        value
+      )
       .then((res) => {
-        props.setLoggedIn()
-        props.setUsername(res.data.user_username)
-        props.setUserID(res.data.user_id)
-        localStorage.setItem("token", res.data.token)
+        props.setLoggedIn();
+        props.setUsername(res.data.user_username);
+        props.setUserID(res.data.user_id);
+        localStorage.setItem("token", res.data.token);
         push("/createprofile");
       })
       .catch((err) => {
@@ -119,6 +129,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, {setUsername,setUserID, setLoggedIn})(
-  UserLogin
-);
+export default connect(mapStateToProps, {
+  setUsername,
+  setUserID,
+  setLoggedIn,
+})(UserLogin);

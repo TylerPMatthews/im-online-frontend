@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
@@ -7,6 +7,7 @@ import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
 import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
 import { connect } from "react-redux";
 
+//Styles
 const StyledDiv = styled.nav`
   background-color: black;
   padding: 3%;
@@ -21,7 +22,6 @@ const StyledDiv = styled.nav`
 `;
 
 const Nav = (props) => {
-
   return (
     <header>
       {props.loggedIn === true ? (

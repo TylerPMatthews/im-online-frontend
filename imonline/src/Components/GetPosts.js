@@ -7,12 +7,13 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import CardMedia from "@material-ui/core/CardMedia";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
 
+//Styles
 const StyledDiv = styled.div`
   text-align: center;
   h3 {
@@ -20,7 +21,7 @@ const StyledDiv = styled.div`
     padding: 2%;
   }
   .postwrapper h3 {
-    color: red;
+    color: black;
     padding-top: 5%;
   }
   .bodytext {
@@ -33,6 +34,7 @@ const StyledDiv = styled.div`
   }
 `;
 
+//Card styles
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
@@ -40,6 +42,7 @@ const useStyles = makeStyles({
   },
   title: {
     fontSize: 20,
+    color: "red",
   },
   pos: {
     marginBottom: 20,
@@ -61,12 +64,18 @@ const useStyles = makeStyles({
 
 const GetPosts = (props) => {
   const classes = useStyles();
+
+  //Push to page
   const { push } = useHistory();
+
+  //State
   const [posts, setPosts] = useState([]);
   const [liked, setLiked] = useState([]);
+
+  //Get all posts
   useEffect(() => {
     axios
-      .get("http://localhost:59283/user/view/post")
+      .get("https://im-online.herokuapp.com/user/view/post")
       .then((res) => {
         const data = res.data;
         const reversedData = data.reverse();
@@ -76,42 +85,22 @@ const GetPosts = (props) => {
         console.log("Axios get all posts error", err);
       });
   }, [liked]);
-  console.log(posts);
   return (
     <StyledDiv>
       <div className="postwrapper">
         <h3>Recent Posts</h3>
         {posts.map((item, idx) => {
+          //Like a post
           const likePost = () => {
-            item.user_post_liked_username !== null ? (
-              item.user_post_liked_username.push(props.user_username)
-            ) : (
-              <div></div>
-            );
-
-            axios
-              .put(
-                `http://localhost:59283/user/post/liked/${item.user_post_id}`,
-                item.user_post_liked_username
-              )
-              .then((res) => {
-                setLiked(res);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          };
-
-          const dislikePost = () => {
-            const newDislikedData = {
+            const addLike = item.user_post_liked + 1;
+            const likedData = {
+              user_post_liked: addLike,
               user_post_id: item.user_post_id,
-              user_post_liked_thumbDown: item.user_post_liked_thumbDown + 1,
             };
-
             axios
               .put(
-                `http://localhost:59283/user/post/liked/${item.user_post_id}`,
-                newDislikedData
+                `https://im-online.herokuapp.com/user/post/liked/${item.user_post_id}`,
+                likedData
               )
               .then((res) => {
                 setLiked(res);
@@ -121,9 +110,32 @@ const GetPosts = (props) => {
               });
           };
 
+          //Dislike a post
+          const dislikePost = () => {
+            const addDislike = item.user_post_disliked + 1;
+            const dislikedData = {
+              user_post_disliked: addDislike,
+              user_post_id: item.user_post_id,
+            };
+            axios
+              .put(
+                `https://im-online.herokuapp.com/user/post/disliked/${item.user_post_id}`,
+                dislikedData
+              )
+              .then((res) => {
+                setLiked(res);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          };
+
+          //Delete a post
           const deletePost = () => {
             axios
-              .delete(`http://localhost:59283/user/post/${item.user_post_id}`)
+              .delete(
+                `https://im-online.herokuapp.com/user/post/${item.user_post_id}`
+              )
               .then((res) => {
                 setLiked(res);
               })
@@ -136,11 +148,7 @@ const GetPosts = (props) => {
             <div key={idx}>
               <Card className={classes.root} variant="outlined">
                 <CardContent>
-                  <Typography
-                    className={classes.title}
-                    color="textSecondary"
-                    gutterBottom
-                  >
+                  <Typography className={classes.title} gutterBottom>
                     {item.user_username}
                   </Typography>
                   <Typography
@@ -166,18 +174,17 @@ const GetPosts = (props) => {
                   >
                     Comments
                   </Button>
-                  <Button size="small" onClick={likePost}>
-                    Like{" "}
-                    {item.user_post_liked_username !== null ? (
-                      item.user_post_liked_username.length
-                    ) : (
-                      <div></div>
-                    )}
+                  <IconButton size="small" color="primary" onClick={likePost}>
+                    Like {item.user_post_liked}
                     <ThumbUpIcon />{" "}
-                  </Button>
-                  <Button size="small" onClick={dislikePost}>
-                    Dislike {item.user_post_liked_thumbDown} <ThumbDownIcon />
-                  </Button>
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={dislikePost}
+                  >
+                    Dislike {item.user_post_disliked} <ThumbDownIcon />
+                  </IconButton>
                   {props.user_username === item.user_username ? (
                     <Button size="small" onClick={deletePost}>
                       Delete

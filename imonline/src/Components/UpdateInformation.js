@@ -10,41 +10,49 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+//Styles
 const StyledDiv = styled.div`
   text-align: center;
 `;
-
+//Form styles
 const useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(8),
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-    },
-    avatar: {
-      margin: theme.spacing(1),
-    },
-    form: {
-      width: "100%", // Fix IE 11 issue.
-      marginTop: theme.spacing(3),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  }));
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 const UpdateInformation = (props) => {
-    const classes = useStyles();
+  const classes = useStyles();
+  //Form values
   const initialFormValues = {
     user_username: "",
     user_email: "",
     user_phone: "",
   };
+
+  //State
   const [value, setValue] = useState(initialFormValues);
   const [dummy, setDummy] = useState([]);
+
+  //Get data
   useEffect(() => {
     axios
-      .get(`http://localhost:59283/user/information/data/${props.user_id}`)
+      .get(
+        `https://im-online.herokuapp.com/user/information/data/${props.user_id}`
+      )
       .then((res) => {
         setValue(res.data[0]);
       })
@@ -53,6 +61,7 @@ const UpdateInformation = (props) => {
       });
   }, [dummy, props.user_id]);
 
+  //form change
   const handleChange = (e) => {
     setValue({
       ...value,
@@ -60,12 +69,18 @@ const UpdateInformation = (props) => {
     });
   };
 
+  //form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:59283/user/information/data/${props.user_id}`, value)
+      .put(
+        `https://im-online.herokuapp.com/user/information/data/${props.user_id}`,
+        value
+      )
       .then((res) => {
-        window.alert("Your profile has been updated! Changes will go in effect upon next login.");
+        window.alert(
+          "Your profile has been updated! Changes will go in effect upon next login."
+        );
         setDummy(res);
       })
       .catch((err) => {
@@ -74,17 +89,16 @@ const UpdateInformation = (props) => {
   };
   return (
     <StyledDiv>
-    
-        <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
-          Update {props.user_username}'s information
+            Update {props.user_username}'s information
           </Typography>
-          <form className={classes.form} noValidate  onSubmit={handleSubmit}>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                  <h4>Username</h4>
+                <h4>Username</h4>
                 <TextField
                   variant="outlined"
                   fullWidth
@@ -95,7 +109,7 @@ const UpdateInformation = (props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-              <h4>Email</h4>
+                <h4>Email</h4>
                 <TextField
                   variant="outlined"
                   fullWidth
@@ -107,7 +121,7 @@ const UpdateInformation = (props) => {
               </Grid>
 
               <Grid item xs={12}>
-              <h4>Phone number</h4>
+                <h4>Phone number</h4>
                 <TextField
                   variant="outlined"
                   fullWidth
@@ -117,7 +131,6 @@ const UpdateInformation = (props) => {
                   value={value.user_phone}
                 />
               </Grid>
-      
             </Grid>
             <Button
               type="submit"
@@ -142,5 +155,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(UpdateInformation);
-
-

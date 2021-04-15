@@ -7,14 +7,16 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
+//Styled components
 const StyledDiv = styled.div`
   text-align: center;
 `;
 
+//Form styles
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -37,21 +39,28 @@ const useStyles = makeStyles((theme) => ({
 
 const Comments = (props) => {
   const classes = useStyles();
+
+  //Grab ID from url
   const { id } = useParams();
+  //Fix : in the ID
   const newID = id.replace(/:/g, "");
-  const { push } = useHistory();
+
+  //Form values
   const initialFormValues = {
     user_comment_text: "",
     user_id: props.user_id,
     user_post_id: newID,
   };
 
+  //State
   const [value, setValue] = useState(initialFormValues);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState([]);
+
+  //Grab the comment on load by ID
   useEffect(() => {
     axios
-      .get(`http://localhost:59283/user/comment/view/${newID}`)
+      .get(`https://im-online.herokuapp.com/user/comment/view/${newID}`)
       .then((res) => {
         setComments(res.data);
       })
@@ -60,6 +69,7 @@ const Comments = (props) => {
       });
   }, [newComment, newID]);
 
+  //Form change
   const handleChange = (e) => {
     setValue({
       ...value,
@@ -67,10 +77,11 @@ const Comments = (props) => {
     });
   };
 
+  //Form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:59283/user/comment", value)
+      .post("https://im-online.herokuapp.com/user/comment", value)
       .then((res) => {
         setValue(initialFormValues);
         const newUID = parseInt(res.data);
@@ -81,7 +92,7 @@ const Comments = (props) => {
         };
 
         axios
-          .post("http://localhost:59283/user/comment/view", data)
+          .post("https://im-online.herokuapp.com/user/comment/view", data)
           .then((res) => {
             setNewComment(res);
           })
@@ -94,7 +105,6 @@ const Comments = (props) => {
       });
   };
 
-  console.log(comments);
   return (
     <StyledDiv>
       <Container component="main" maxWidth="xs">

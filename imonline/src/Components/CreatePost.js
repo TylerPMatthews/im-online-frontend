@@ -10,6 +10,7 @@ import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
+//Form styles
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -31,16 +32,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CreatePost = (props) => {
+  //push to new page
   const { push } = useHistory();
   const classes = useStyles();
+
+  //Form values
   const initialFormValues = {
     user_post_text: "",
     user_post_city: "",
     user_post_State: "",
     user_id: props.user_id,
   };
+
+  //State
   const [value, setValue] = useState(initialFormValues);
 
+  //Form change
   const handleChange = (e) => {
     setValue({
       ...value,
@@ -48,51 +55,50 @@ const CreatePost = (props) => {
     });
   };
 
+  //Form submit
   const handleSubmit = (e) => {
     e.preventDefault();
+    //Submits the post
     axios
-      .post("http://localhost:59283/user/post", value)
+      .post("https://im-online.herokuapp.com/user/post", value)
       .then((res) => {
-        console.log(res);
         const newUID = parseInt(res.data);
-
         const PostData = {
           user_post_id: newUID,
         };
+        //Submits a new liked post defaulting to 0
         axios
-          .post("http://localhost:59283/user/post/liked", PostData)
+          .post("https://im-online.herokuapp.com/user/post/liked", PostData)
           .then((res) => {
             const newLikedID = parseInt(res.data);
-
+            //Submits a new disliked post defaulting to 0
             axios
-            .post("http://localhost:59283/user/post/disliked", PostData)
-            .then(res=>{
-
-              const newDislikedID = parseInt(res.data);
-              const data = {
-              user_id: props.user_id,
-              user_post_id: newUID,
-              user_post_liked_id: newLikedID,
-              user_post_disliked_id: newDislikedID
-            };
-
-
-             axios
-              .post("http://localhost:59283/user/view/post", data)
+              .post(
+                "https://im-online.herokuapp.com/user/post/disliked",
+                PostData
+              )
               .then((res) => {
-                console.log(res);
-                push("/home");
+                const newDislikedID = parseInt(res.data);
+                const data = {
+                  user_id: props.user_id,
+                  user_post_id: newUID,
+                  user_post_liked_id: newLikedID,
+                  user_post_disliked_id: newDislikedID,
+                };
+                //Submits all IDS
+                axios
+                  .post("https://im-online.herokuapp.com/user/view/post", data)
+                  .then((res) => {
+                    console.log(res);
+                    push("/home");
+                  })
+                  .catch((err) => {
+                    console.log("Axios to view db error", err);
+                  });
               })
               .catch((err) => {
-                console.log("Axios to view db error", err);
+                console.log(err);
               });
-
-
-            })
-            .catch(err=>{
-              console.log(err)
-            })
-
           })
           .catch((err) => {
             console.log(err);
@@ -123,6 +129,7 @@ const CreatePost = (props) => {
                   onChange={handleChange}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"

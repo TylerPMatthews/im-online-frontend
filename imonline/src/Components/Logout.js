@@ -5,8 +5,12 @@ import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { setLoggedOut } from "../Actions/logoutActions";
 
+//Styles
 const StyledDiv = styled.div`
   text-align: center;
+  a {
+    text-decoration: none;
+  }
   .thanks {
     margin: 3rem;
   }
@@ -16,23 +20,31 @@ const StyledDiv = styled.div`
   .logout {
     padding-top: 1rem;
   }
-  .creator{
-    padding-top:1.5rem;
+  .logout h3 {
+    color: red;
   }
-  .frontend{
-    padding-top:1.5rem;
+  .creator {
+    padding-top: 1.5rem;
   }
-  .backend{
-    padding-top:1.5rem;
+  .frontend {
+    padding-top: 1.5rem;
+  }
+  .backend {
+    padding-top: 1.5rem;
   }
 `;
 
 const Logout = (props) => {
+  //Back a page
   const history = useHistory();
+  //push to new page
   const { push } = useHistory();
   const logoutUser = () => {
+    //logout state
     props.setLoggedOut();
+    //remove local storage
     localStorage.removeItem("token");
+    //push to login page
     push("/login");
   };
   return (
@@ -56,18 +68,29 @@ const Logout = (props) => {
           No
         </Button>
       </div>
-      <div className='creator'>
-          <h4>Creator</h4>
-          <a target='#blank' href='https://github.com/TylerPMatthews'>Github Profile</a>
-
+      <div className="creator">
+        <h4>Creator</h4>
+        <a target="#blank" href="https://github.com/TylerPMatthews">
+          Github Profile
+        </a>
       </div>
-      <div className='frontend'>
+      <div className="frontend">
         <h4>Project Front-End code</h4>
-        <a href='https://github.com/TylerPMatthews/im-online-frontend' target='#blank'>Github Code</a>
+        <a
+          href="https://github.com/TylerPMatthews/im-online-frontend"
+          target="#blank"
+        >
+          Github Code
+        </a>
       </div>
-      <div className='backend'>
-      <h4>Project back-End code</h4>
-        <a href='https://github.com/TylerPMatthews/im-online-backend' target='#blank'>Github Code</a>
+      <div className="backend">
+        <h4>Project back-End code</h4>
+        <a
+          href="https://github.com/TylerPMatthews/im-online-backend"
+          target="#blank"
+        >
+          Github Code
+        </a>
       </div>
     </StyledDiv>
   );

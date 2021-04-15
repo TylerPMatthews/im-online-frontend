@@ -10,10 +10,12 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+//Styles
 const StyledDiv = styled.div`
   text-align: center;
 `;
 
+//Form styles
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -35,17 +37,22 @@ const useStyles = makeStyles((theme) => ({
 
 const UpdateProfile = (props) => {
   const classes = useStyles();
+  //Form values
   const initialFormValues = {
     user_profile_firstName: "",
     user_profile_lastName: "",
     user_profile_location: "",
     user_profile_bio: "",
   };
+
+  //State
   const [value, setValue] = useState(initialFormValues);
   const [dummy, setDummy] = useState([]);
+
+  //grab data
   useEffect(() => {
     axios
-      .get(`http://localhost:59283/user/profile/${props.user_id}`)
+      .get(`https://im-online.herokuapp.com/user/profile/${props.user_id}`)
       .then((res) => {
         setValue(res.data[0]);
       })
@@ -53,6 +60,8 @@ const UpdateProfile = (props) => {
         console.log(err);
       });
   }, [dummy, props.user_id]);
+
+  //form submit
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,7 +75,7 @@ const UpdateProfile = (props) => {
         console.log(err);
       });
   };
-
+  //form change
   const handleChange = (e) => {
     setValue({
       ...value,

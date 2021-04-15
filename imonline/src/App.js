@@ -15,6 +15,8 @@ import Nav from './Components/Nav';
 import MyProfile from './Components/MyProfile';
 import UpdateInformation from './Components/UpdateInformation';
 import UpdateProfile from './Components/UpdateProfile';
+import Footer from './Components/Footer';
+import Logout from './Components/Logout';
 function App(props) {
 
   return (
@@ -22,6 +24,9 @@ function App(props) {
       <Nav/>
       <body>
         <Switch>
+          <Route path='/logout'>
+            <Logout/>
+          </Route>
           <Route path='/updateprofile'>
             <UpdateProfile/>
           </Route>
@@ -58,6 +63,7 @@ function App(props) {
           </Route>
         </Switch>
       </body>
+      <Footer/>
     </div>
   );
 }

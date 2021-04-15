@@ -1,32 +1,56 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import AccountCircleRoundedIcon from "@material-ui/icons/AccountCircleRounded";
+import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
+import { connect } from "react-redux";
 
 const StyledDiv = styled.nav`
+  background-color: black;
+  padding: 3%;
+  display: flex;
+  justify-content: space-evenly;
 
-background-color:black;
-padding:3%;
-display:flex;
-justify-content:space-evenly;
+  a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.1rem;
+  }
+`;
 
-a{
-    text-decoration:none;
-    color:white;
-    font-size:1.1rem;
-}
+const Nav = (props) => {
 
-`
+  return (
+    <header>
+      {props.loggedIn === true ? (
+        <StyledDiv>
+          <Link to="/home">
+            <HomeRoundedIcon />
+          </Link>
+          <Link to="/createpost">
+            <AddRoundedIcon />
+          </Link>
+          <Link to="myprofile">
+            <AccountCircleRoundedIcon />
+          </Link>
+          <Link to="/logout">
+            <ExitToAppRoundedIcon />
+          </Link>
+        </StyledDiv>
+      ) : (
+        <StyledDiv>
+          <Link to="/login">Login</Link> <Link to="/register">Register</Link>
+        </StyledDiv>
+      )}
+    </header>
+  );
+};
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.sign.loggedIn,
+  };
+};
 
-const Nav = () => {
-    return (
-       <header>
-           <StyledDiv>
-               <Link to='/home'>Home</Link>
-               <Link to='/createpost'>Create Post</Link>
-               <Link to='myprofile'>My Profile</Link>
-               <Link>Logout</Link>
-           </StyledDiv>
-       </header>
-    )
-}
-export default Nav;
+export default connect(mapStateToProps)(Nav);

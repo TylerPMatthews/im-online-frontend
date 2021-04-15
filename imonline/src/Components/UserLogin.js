@@ -10,6 +10,7 @@ import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {setUsername,setUserID} from '../Actions/userActions';
+import {setLoggedIn} from '../Actions/logoutActions';
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -51,8 +52,10 @@ function UserLogin(props) {
     axios
       .post("http://localhost:59283/user/information/auth/login", value)
       .then((res) => {
+        props.setLoggedIn()
         props.setUsername(res.data.user_username)
         props.setUserID(res.data.user_id)
+        localStorage.setItem("token", res.data.token)
         push("/createprofile");
       })
       .catch((err) => {
@@ -112,9 +115,10 @@ const mapStateToProps = (state) => {
   return {
     user_username: state.user.user_username,
     user_id: state.user.user_id,
+    loggedIn: state.sign.loggedIn,
   };
 };
 
-export default connect(mapStateToProps, {setUsername,setUserID})(
+export default connect(mapStateToProps, {setUsername,setUserID, setLoggedIn})(
   UserLogin
 );

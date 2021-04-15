@@ -29,11 +29,13 @@ h3{
   color:black;
   padding:2%;
 }
+
 `;
 
 const Home = (props) => {
   return (
     <StyledDiv>
+   
       <div className="greeting">
         <h2>Welcome , <span>{props.user_username}</span></h2>
       </div>

@@ -35,7 +35,6 @@ const CreatePost = (props) => {
   const classes = useStyles();
   const initialFormValues = {
     user_post_text: "",
-    user_post_img: "",
     user_post_city: "",
     user_post_State: "",
     user_id: props.user_id,
@@ -121,16 +120,6 @@ const CreatePost = (props) => {
                   id="user_post_text"
                   label="What's on your mind?..."
                   name="user_post_text"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  id="user_post_img"
-                  label="Post Image (use image address)"
-                  name="user_post_img"
                   onChange={handleChange}
                 />
               </Grid>

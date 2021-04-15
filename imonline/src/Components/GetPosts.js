@@ -68,8 +68,8 @@ const GetPosts = (props) => {
     axios
       .get("http://localhost:59283/user/view/post")
       .then((res) => {
-        const data = res.data
-        const reversedData = data.reverse()
+        const data = res.data;
+        const reversedData = data.reverse();
         setPosts(reversedData);
       })
       .catch((err) => {
@@ -80,7 +80,7 @@ const GetPosts = (props) => {
   return (
     <StyledDiv>
       <div className="postwrapper">
-        <h3>Recent Post's</h3>
+        <h3>Recent Posts</h3>
         {posts.map((item, idx) => {
           const likePost = () => {
             item.user_post_liked_username !== null ? (
@@ -150,16 +150,6 @@ const GetPosts = (props) => {
                   >
                     <div className="bodytext">
                       <p>{item.user_post_text}</p>
-                    </div>
-                    <div className="post_image">
-                      {item.user_post_img.length < 1 ? (
-                        <div></div>
-                      ) : (
-                        <CardMedia
-                          className={classes.media}
-                          image={item.user_post_img}
-                        />
-                      )}
                     </div>
                   </Typography>
 

@@ -66,7 +66,10 @@ const UpdateProfile = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:59283/user/profile/${props.user_id}`, value)
+      .put(
+        `https://im-online-frontend.vercel.app/user/profile/${props.user_id}`,
+        value
+      )
       .then((res) => {
         window.alert("Your profile has been updated!");
         setDummy(res);

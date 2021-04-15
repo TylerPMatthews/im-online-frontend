@@ -67,7 +67,7 @@ const UpdateProfile = (props) => {
     e.preventDefault();
     axios
       .put(
-        `https://im-online-frontend.vercel.app/user/profile/${props.user_id}`,
+        `https://im-online.herokuapp.com/user/profile/${props.user_id}`,
         value
       )
       .then((res) => {

@@ -49,7 +49,7 @@ function UserCreateProfile(props) {
   //Get profile
   useEffect(() => {
     axios
-      .get(`http://localhost:59283/user/profile/${props.user_id}`)
+      .get(`https://im-online.herokuapp.com/user/profile/${props.user_id}`)
       .then((res) => {
         if (res.data.length > 0) {
           push("/home");

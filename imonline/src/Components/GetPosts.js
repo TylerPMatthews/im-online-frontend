@@ -38,7 +38,8 @@ const StyledDiv = styled.div`
 const useStyles = makeStyles({
   root: {
     minWidth: 375,
-    margin: 50,
+    marginRight: 25,
+    marginLeft: 25,
   },
   title: {
     fontSize: 20,

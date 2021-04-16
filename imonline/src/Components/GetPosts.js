@@ -37,7 +37,7 @@ const StyledDiv = styled.div`
 //Card styles
 const useStyles = makeStyles({
   root: {
-    minWidth: 375,
+    minWidth: 400,
     marginRight: 25,
     marginLeft: 25,
   },

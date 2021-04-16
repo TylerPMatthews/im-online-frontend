@@ -12,12 +12,9 @@ const StyledDiv = styled.div`
     font-size: 1.2rem;
   }
   .information {
-    margin: 2.5rem;
+    margin: 5rem;
   }
   .information h4 {
-    color: red;
-  }
-  .profile h4 {
     color: red;
   }
   .btmbottom {
@@ -32,10 +29,7 @@ const MyProfile = () => {
     //push to update info page
     push("/updateinformation");
   };
-  //push to update profile page
-  const toProfile = () => {
-    push("/updateprofile");
-  };
+
   return (
     <StyledDiv>
       <div className="heading">
@@ -49,13 +43,6 @@ const MyProfile = () => {
         </IconButton>
       </div>
 
-      <div className="profile">
-        <h4>User Profile</h4>
-        <IconButton onClick={toProfile} variant="outlined">
-          Update
-          <UpdateRoundedIcon />
-        </IconButton>
-      </div>
       <div className="btmbottom">
         <IconButton
           onClick={() => {

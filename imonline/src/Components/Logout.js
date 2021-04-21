@@ -10,6 +10,7 @@ const StyledDiv = styled.div`
   text-align: center;
   a {
     text-decoration: none;
+    color: black;
   }
   .thanks {
     margin: 3rem;

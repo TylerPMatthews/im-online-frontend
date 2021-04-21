@@ -75,6 +75,10 @@ function UserLogin(props) {
 
   return (
     <Container component="main" maxWidth="xs">
+      <h4>
+        (Server may take a few seconds to boot-up due to it being hosted on Free
+        Heroku. Please wait after clicking sign in.)
+      </h4>
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">

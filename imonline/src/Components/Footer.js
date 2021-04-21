@@ -20,6 +20,7 @@ const StyledDiv = styled.div`
   }
   .links a {
     text-decoration: none;
+    color:white;
   }
 `;
 

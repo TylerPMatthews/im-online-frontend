@@ -1,7 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import IconButton from "@material-ui/core/IconButton";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import { useHistory } from "react-router-dom";
 
 //Styles
 const StyledDiv = styled.div`
@@ -27,18 +29,28 @@ const StyledDiv = styled.div`
     padding: 2%;
   }
 `;
-
+//Push to home
 const Home = (props) => {
+  const { push } = useHistory();
+  const pushnewPost = () => {
+    push("/createpost");
+  };
+
+  //make username always display uppercase
+  const upper = props.user_username.toUpperCase();
+
   return (
     <StyledDiv>
       <div className="greeting">
         <h2>
-          Welcome , <span>{props.user_username}</span>
+          WELCOME , <span>{upper}</span>
         </h2>
       </div>
       <div className="postwrap">
         <h3>Would you like to create a new post?</h3>
-        <Link to="/createpost">Create new post</Link>
+        <IconButton onClick={pushnewPost}>
+          <AddRoundedIcon />
+        </IconButton>
       </div>
     </StyledDiv>
   );

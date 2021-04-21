@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 //Styles
 const StyledDiv = styled.nav`
   background-color: black;
-  padding: 3%;
+  padding: 2rem;
   display: flex;
   justify-content: space-evenly;
 

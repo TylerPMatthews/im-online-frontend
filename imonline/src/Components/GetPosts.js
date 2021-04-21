@@ -40,6 +40,7 @@ const useStyles = makeStyles({
     minWidth: 375,
     marginRight: 25,
     marginLeft: 20,
+    marginBottom:25,
   },
   title: {
     fontSize: 20,

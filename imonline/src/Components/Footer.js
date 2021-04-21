@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import image1 from "../Images/LogoMakr-7JfYUC.png";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 const StyledDiv = styled.div`
   text-align: center;
@@ -20,25 +21,39 @@ const StyledDiv = styled.div`
   }
   .links a {
     text-decoration: none;
-    color:white;
+    color: white;
   }
 `;
 
-const Footer = () => {
+const Footer = (props) => {
   return (
     <footer>
-      <StyledDiv>
-        <p> &copy; 2021 IMONLINE </p>
-        <p>All rights reserved</p>
-        <img src={image1} alt={image1} />
-        <div className="links">
-          <Link to="/home">Home</Link>
-          <Link to="/createpost">Create Post</Link>
-          <Link to="/myprofile">My Profile</Link>
-          <Link to="/logout">Logout</Link>
-        </div>
-      </StyledDiv>
+      {props.loggedIn === true ? (
+        <StyledDiv>
+          <p> &copy; 2021 IMONLINE </p>
+          <p>All rights reserved</p>
+          <img src={image1} alt={image1} />
+          <div className="links">
+            <Link to="/home">Home</Link>
+            <Link to="/createpost">Create Post</Link>
+            <Link to="/myprofile">My Profile</Link>
+            <Link to="/logout">Logout</Link>
+          </div>
+        </StyledDiv>
+      ) : (
+        <StyledDiv>
+          <p> &copy; 2021 IMONLINE </p>
+          <p>All rights reserved</p>
+          <img src={image1} alt={image1} />
+        </StyledDiv>
+      )}
     </footer>
   );
 };
-export default Footer;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.sign.loggedIn,
+  };
+};
+
+export default connect(mapStateToProps)(Footer);
